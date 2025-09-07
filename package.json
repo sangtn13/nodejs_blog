@@ -1,0 +1,29 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --inspect index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SangTran13/nodejs_blog.git"
+  },
+  "keywords": [
+    "blog",
+    "project",
+    "nodejs"
+  ],
+  "author": "sangtran13",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SangTran13/nodejs_blog/issues"
+  },
+  "homepage": "https://github.com/SangTran13/nodejs_blog#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}

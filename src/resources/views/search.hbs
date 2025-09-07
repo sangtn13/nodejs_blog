@@ -1,0 +1,40 @@
+<div class="search-form">
+  <h2>Tìm kiếm bài viết</h2>
+  <form action="/search" method="POST">
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        name="q"
+        placeholder="Nhập từ khóa..."
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="search-info">Thông tin tìm kiếm:</label>
+      <select class="form-control" id="search-results" name="info">
+        <option value="" disabled selected>Chọn thông tin</option>
+        <option value="all">Tất cả</option>
+        <option value="post-1">Bài viết 1</option>
+        <option value="post-2">Bài viết 2</option>
+        <option value="post-3">Bài viết 3</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+  </form>
+
+  <div class="search-separator"></div>
+
+  <div class="search-instructions">
+    <p>Nhập từ khóa vào ô trên và nhấn "Tìm kiếm" để tìm các bài viết liên quan.</p>
+  </div>
+
+  <div class="search-results">
+    <h3>Kết quả tìm kiếm:</h3>
+    <ul>
+      <li>Bài viết 1</li>
+      <li>Bài viết 2</li>
+      <li>Bài viết 3</li>
+    </ul>
+  </div>
+</div>

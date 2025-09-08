@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-import slug from "mongoose-slug-generator";
-mongoose.plugin(slug);
+import mongooseDelete from "mongoose-delete";
 
 const Schema = mongoose.Schema;
 
@@ -13,4 +12,10 @@ const Course = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Course", Course);
+// Add plugins
+Course.plugin(mongooseDelete, {
+  deletedAt: true,
+  overrideMethods: "all"
+});
+
+export default mongoose.models.Course || mongoose.model("Course", Course);

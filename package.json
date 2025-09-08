@@ -4,7 +4,6 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
-    "beautify": "lint-staged",
     "start": "nodemon --inspect src/index.js",
     "watch": "sass --watch src/resources/scss/app.scss:src/public/css/app.css",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,26 +24,13 @@
   },
   "homepage": "https://github.com/SangTran13/nodejs_blog#readme",
   "description": "",
-  "lint-staged": {
-    "src/**/*.js": [
-      "prettier --single-quote --trailing-comma all --tab-width 2 --write"
-    ],
-    "src/**/*.css": [
-      "prettier --single-quote --trailing-comma all --tab-width 2 --write"
-    ],
-    "src/**/*.scss": [
-      "prettier --single-quote --trailing-comma all --tab-width 2 --write"
-    ]
-  },
   "dependencies": {
     "express": "^5.1.0",
     "express-handlebars": "^8.0.1"
   },
   "devDependencies": {
-    "lint-staged": "^16.1.6",
     "morgan": "^1.10.1",
     "nodemon": "^3.1.10",
-    "prettier": "^3.6.2",
     "sass": "^1.92.1"
   }
 }

@@ -36,11 +36,6 @@
       "prettier --single-quote --trailing-comma all --tab-width 2 --write"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "dependencies": {
     "express": "^5.1.0",
     "express-handlebars": "^8.0.1"

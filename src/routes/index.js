@@ -1,6 +1,7 @@
 import aboutRoute from './about.js';
 import contactRoute from './contact.js';
 import siteRoute from './site.js';
+import courseRoute from './courses.js';
 
 function route(app) {
   // root route
@@ -22,6 +23,7 @@ function route(app) {
 
   app.use('/about', aboutRoute);
   app.use('/contact', contactRoute);
+  app.use('/courses', courseRoute);
   app.post('/search', (req, res) => {
     res.send(
       `Kết quả tìm kiếm cho: ${req.body.q} với thông tin: ${req.body.info}`,

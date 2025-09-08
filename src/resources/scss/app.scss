@@ -1,10 +1,2 @@
 // npm run watch to compile SCSS to CSS
 @use 'variables' as *;
-
-h1 {
-  color: $green-color;
-}
-
-h2 {
-  color: $blue-color;
-}

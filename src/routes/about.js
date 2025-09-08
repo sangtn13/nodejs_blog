@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 import AboutController from '../app/controllers/AboutController.js';
 
-router.use('/:slug', AboutController.show);
-router.use('/', AboutController.index);
+router.get('/:slug', AboutController.show);
+router.get('/', AboutController.index);
 
 export default router;

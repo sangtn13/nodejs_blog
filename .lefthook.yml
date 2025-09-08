@@ -2,4 +2,4 @@ pre-commit:
   parallel: true
   commands:
     prettier:
-      run: npx lint-staged
+      run: npm run lint-staged

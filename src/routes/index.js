@@ -1,6 +1,6 @@
-import aboutRoute from "./about.js";
-import contactRoute from "./contact.js";
-import siteRoute from "./site.js";
+import aboutRoute from './about.js';
+import contactRoute from './contact.js';
+import siteRoute from './site.js';
 
 function route(app) {
   // root route
@@ -20,15 +20,15 @@ function route(app) {
   //     res.render("search");
   //   });
 
-  app.use("/about", aboutRoute);
-  app.use("/contact", contactRoute);
-  app.post("/search", (req, res) => {
+  app.use('/about', aboutRoute);
+  app.use('/contact', contactRoute);
+  app.post('/search', (req, res) => {
     res.send(
-      `Kết quả tìm kiếm cho: ${req.body.q} với thông tin: ${req.body.info}`
+      `Kết quả tìm kiếm cho: ${req.body.q} với thông tin: ${req.body.info}`,
     );
   });
 
-  app.use("/", siteRoute);
+  app.use('/', siteRoute);
 
   app.use((req, res) => {
     res.status(404).render('404', { url: req.originalUrl });

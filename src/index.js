@@ -21,12 +21,14 @@ app.use(express.static(path.join(__dirname, 'public'))); // serve static files f
 
 // template engine
 app.engine('hbs', handlebars.engine({ extname: '.hbs' }));
-app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources/views'));
+            app.set('view engine', 'hbs');
+            app.set('views', path.join(__dirname, 'resources/views'));
 
 // routes
 route(app);
 
 // query parameters is req.query, form data in req.body
 // 127.0.0.1 -> localhost
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+app.listen(port, () =>
+               console.log(`Example app listening at http://localhost:${port}`),
+);

@@ -13,3 +13,27 @@
     <a href="/contact" class="btn btn-outline-primary btn-lg">Liên hệ</a>
   </div>
 </section>
+
+<div class="container mt-5">
+  <h2 class="mb-4">Danh sách khóa học</h2>
+  <div class="row">
+    {{#each courses}}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          {{#if image}}
+            <img src="{{image}}" class="card-img-top" alt="{{title}}">
+          {{/if}}
+          <div class="card-body">
+            <h5 class="card-title">{{name}}</h5>
+            <p class="card-text">{{description}}</p>
+            <a href="/courses/{{_id}}" class="btn btn-primary">Xem chi tiết</a>
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <div class="col-12">
+        <p class="text-muted">Chưa có khóa học nào.</p>
+      </div>
+    {{/each}}
+  </div>
+</div>

@@ -1,0 +1,76 @@
+{{!-- filepath: d:\NodeJS\blog\src\resources\views\courses\show.hbs --}}
+<div class="container-fluid bg-light py-3">
+  <div class="container">
+    <a href="/" class="btn btn-link px-0 mb-3">
+      <ig src="https://accounts.fullstack.edu.vn/static/media/f8-icon.18cd71cfcfa33566a22b.png" alt="F8" style="height:32px;vertical-align:middle;">
+      <span class="ml-2 font-weight-bold text-dark">&lt; QUAY LẠI</span>
+    </a>
+    <div class="row">
+      <!-- Main content -->
+      <div class="col-lg-8">
+        <h2 class="font-weight-bold mb-2">{{courses.name}}</h2>
+        <p class="text-muted mb-4">{{courses.description}}</p>
+        <h5 class="mb-3 font-weight-bold">Nội dung khóa học</h5>
+        <div class="mb-2 text-muted">
+          11 chương &bull; 138 bài học &bull; Thời lượng 10 giờ 29 phút
+        </div>
+        <div class="accordion" id="courseSections">
+          <div class="card mb-2">
+            <div class="card-header p-2" id="heading1">
+              <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                  1. Giới thiệu
+                  <span class="float-right text-muted">3 bài học</span>
+                </button>
+              </h2>
+            </div>
+            <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#courseSections">
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Giới thiệu khóa học</li>
+                  <li class="list-group-item">Cài đặt môi trường</li>
+                  <li class="list-group-item">Hello World</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Thêm các chương khác tương tự, có thể để cứng nếu chưa có model -->
+          <div class="card mb-2">
+            <div class="card-header p-2" id="heading2">
+              <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                  2. Biến và kiểu dữ liệu
+                  <span class="float-right text-muted">32 bài học</span>
+                </button>
+              </h2>
+            </div>
+            <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#courseSections">
+              <div class="card-body">
+                <span class="text-muted">Nội dung đang cập nhật...</span>
+              </div>
+            </div>
+          </div>
+          <!-- ... -->
+        </div>
+      </div>
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm mb-3">
+          {{#if courses.image}}
+            <img src="{{courses.image}}" class="card-img-top" alt="{{courses.name}}">
+          {{else}}
+            <img src="https://files.fullstack.edu.vn/f8-prod/courses/6.png" class="card-img-top" alt="Course">
+          {{/if}}
+          <div class="card-body text-center">
+            <a href="#" class="btn btn-primary btn-block mb-2">Xem giới thiệu khóa học</a>
+            <ul class="list-unstyled text-left small mb-0">
+              <li><i class="fa fa-list-ul mr-2"></i>Tổng số 138 bài học</li>
+              <li><i class="fa fa-clock-o mr-2"></i>Thời lượng 10 giờ 29 phút</li>
+              <li><i class="fa fa-globe mr-2"></i>Học mọi lúc, mọi nơi</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

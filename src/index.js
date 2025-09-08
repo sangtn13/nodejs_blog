@@ -5,6 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import route from "./routes/index.js";
 import db from "./config/db/index.js";
+import methodOverride from "method-override";
 
 // Connect to database
 db.connect();
@@ -21,10 +22,31 @@ app.use(morgan("combined")); // log all requests to the console
 
 app.use(express.urlencoded({ extended: true })); // to parse form data in POST requests
 app.use(express.json()); // to parse JSON bodies
+app.use(methodOverride("_method")); // override with POST having ?_method=DELETE or ?_method=PUT
 app.use(express.static(path.join(__dirname, "public"))); // serve static files from 'public' directory
 
 // template engine
-app.engine("hbs", handlebars.engine({ extname: ".hbs" }));
+app.engine(
+  "hbs",
+  handlebars.engine({
+    extname: ".hbs",
+    helpers: {
+      inc: function (value) {
+        return parseInt(value) + 1;
+      },
+      formatDate: function (date) {
+        if (!date) return "";
+        const d = new Date(date);
+        const pad = (n) => n.toString().padStart(2, "0");
+        return `${pad(d.getDate())}/${pad(
+          d.getMonth() + 1
+        )}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(
+          d.getSeconds()
+        )}`;
+      },
+    },
+  })
+);
 
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources", "views"));

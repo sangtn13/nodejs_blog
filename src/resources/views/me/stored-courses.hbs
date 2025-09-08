@@ -1,0 +1,70 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Quản lý khóa học của tôi</h2>
+  <a href="/me/trash/courses" class="btn btn-secondary mb-3">Thùng rác</a>
+  {{#if courses.length}}
+    <form method="POST" action="/courses/bulk-action">
+      <table class="table table-bordered table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col"><input type="checkbox" id="checkAll" /></th>
+            <th scope="col">#</th>
+            <th scope="col">Tên khóa học</th>
+            <th scope="col">Mô tả</th>
+            <th scope="col">Ảnh</th>
+            <th scope="col">Ngày tạo</th>
+            <th scope="col">Ngày cập nhật</th>
+            <th scope="col" style="width: 140px;">Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each courses}}
+            <tr>
+              <td><input type="checkbox" name="courseIds[]" value="{{_id}}" /></td>
+              <th scope="row">{{inc @index}}</th>
+              <td>{{name}}</td>
+              <td>{{description}}</td>
+              <td>
+                <img src="{{image}}" alt="{{name}}" style="width: 80px; height: auto;" />
+              </td>
+              <td>{{formatDate createdAt}}</td>
+              <td>{{formatDate updatedAt}}</td>
+              <td>
+                <a href="/courses/{{_id}}/edit" class="btn btn-sm btn-warning">Sửa</a>
+                <form action="/courses/{{_id}}?_method=DELETE" method="POST" style="display:inline;">
+                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</button>
+                </form>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <button
+        type="submit"
+        class="btn btn-danger"
+        name="action"
+        value="delete"
+        onclick="return confirm('Bạn chắc chắn muốn xóa các khóa học đã chọn?')"
+      >Xóa đã chọn</button>
+    </form>
+  {{else}}
+    <div class="alert alert-info text-center">
+      Bạn chưa có khóa học nào.
+      <a href="/courses/create" class="alert-link">Tạo khóa học mới</a>
+    </div>
+  {{/if}}
+</div>
+
+<script>
+  // Check all checkbox
+  document.addEventListener('DOMContentLoaded', function() {
+    var checkAll = document.getElementById('checkAll');
+    if (checkAll) {
+      checkAll.addEventListener('change', function() {
+        var checkboxes = document.querySelectorAll('input[name="courseIds[]"]');
+        for (var checkbox of checkboxes) {
+          checkbox.checked = this.checked;
+        }
+      });
+    }
+  });
+</script>

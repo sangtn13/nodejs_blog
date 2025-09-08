@@ -27,8 +27,9 @@
   "dependencies": {
     "express": "^5.1.0",
     "express-handlebars": "^8.0.1",
+    "method-override": "^3.0.0",
     "mongoose": "^8.18.0",
-    "mongoose-slug-generator": "^1.0.4"
+    "mongoose-delete": "^1.0.2"
   },
   "devDependencies": {
     "morgan": "^1.10.1",

@@ -1,0 +1,124 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Khóa học đã xóa</h2>
+  <a href="/me/stored/courses" class="btn btn-secondary mb-3">Danh sách khóa học</a>
+  {{#if courses.length}}
+    <form method="POST" action="/courses/bulk-action">
+      <table class="table table-bordered table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col"><input type="checkbox" id="checkAll" /></th>
+            <th scope="col">#</th>
+            <th scope="col">Tên khóa học</th>
+            <th scope="col">Mô tả</th>
+            <th scope="col">Ảnh</th>
+            <th scope="col">Ngày tạo</th>
+            <th scope="col">Ngày cập nhật</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col" style="width: 180px;">Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each courses}}
+            <tr>
+              <td><input
+                  type="checkbox"
+                  name="courseIds[]"
+                  value="{{_id}}"
+                /></td>
+              <th scope="row">{{inc @index}}</th>
+              <td>{{name}}</td>
+              <td>{{description}}</td>
+              <td>
+                <img
+                  src="{{image}}"
+                  alt="{{name}}"
+                  style="width: 80px; height: auto;"
+                />
+              </td>
+              <td>{{formatDate createdAt}}</td>
+              <td>{{formatDate updatedAt}}</td>
+              <td>Đã xóa</td>
+              <td>
+                <form
+                  action="/courses/{{_id}}/restore?_method=PATCH"
+                  method="POST"
+                  style="display:inline;"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-success restore-btn"
+                    data-id="{{_id}}"
+                  >
+                    Khôi phục
+                  </button>
+                </form>
+                <form
+                  action="/courses/{{_id}}/force?_method=DELETE"
+                  method="POST"
+                  style="display:inline;"
+                >
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-danger"
+                    onclick="return confirm('Xóa vĩnh viễn khóa học này?')"
+                  >Xóa vĩnh viễn</button>
+                </form>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <button
+        type="submit"
+        class="btn btn-success"
+        name="action"
+        value="restore"
+        onclick="return confirm('Bạn chắc chắn muốn khôi phục các khóa học đã chọn?')"
+      >Khôi phục đã chọn</button>
+      <button
+        type="submit"
+        class="btn btn-danger"
+        name="action"
+        value="force-delete"
+        onclick="return confirm('Bạn chắc chắn muốn xóa vĩnh viễn các khóa học đã chọn?')"
+      >Xóa vĩnh viễn đã chọn</button>
+    </form>
+  {{else}}
+    <div class="alert alert-info text-center">
+      Không có khóa học nào trong thùng rác.
+      <a href="/me/stored/courses" class="alert-link">Quay lại trang quản lý
+        khóa học</a>
+    </div>
+  {{/if}}
+</div>
+
+<script>
+  // Check all checkbox
+  document.addEventListener('DOMContentLoaded', function() {
+    var checkAll = document.getElementById('checkAll');
+    if (checkAll) {
+      checkAll.addEventListener('change', function() {
+        var checkboxes = document.querySelectorAll('input[name="courseIds[]"]');
+        for (var checkbox of checkboxes) {
+          checkbox.checked = this.checked;
+        }
+      });
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.restore-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (confirm('Khôi phục khóa học này?')) {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = `/courses/${btn.dataset.id}/restore?_method=PATCH`;
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    });
+  });
+</script>

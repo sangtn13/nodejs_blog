@@ -7,9 +7,9 @@ import route from "./routes/index.js";
 import db from "./config/db/index.js";
 import methodOverride from "method-override";
 import session from "express-session";
+import helpers from "./helpers/handlebars.js";
 
-import sortMiddleware from "./app/middlewares/SortMiddleware.js";
-
+import sortMiddleware from "./app/middlewares/sortMiddleware.js";
 // Connect to database
 db.connect();
 
@@ -42,37 +42,7 @@ app.engine(
   handlebars.engine({
     extname: ".hbs",
     helpers: {
-      inc: function (value) {
-        return parseInt(value) + 1;
-      },
-      formatDate: function (date) {
-        if (!date) return "";
-        const d = new Date(date);
-        const pad = (n) => n.toString().padStart(2, "0");
-        return `${pad(d.getDate())}/${pad(
-          d.getMonth() + 1
-        )}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(
-          d.getSeconds()
-        )}`;
-      },
-      sortable: (field, sort) => {
-        const sortType = field === sort.column ? sort.type : "default";
-        const icons = {
-          default: "bi bi-arrow-down-up",
-          asc: "bi bi-arrow-up",
-          desc: "bi bi-arrow-down",
-        };
-        const types = {
-          default: "asc",
-          asc: "desc",
-          desc: "asc",
-        };
-        return `
-          <a href="?_sort&column=${field}&type=${types[sortType]}" title="Sắp xếp theo ${field}" style="color: inherit; text-decoration: none;">
-            <i class="${icons[sortType]}"></i>
-          </a>
-        `;
-      },
+      ...helpers,
     },
   })
 );

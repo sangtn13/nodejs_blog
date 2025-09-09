@@ -1,4 +1,4 @@
-function SortMiddleware(req, res, next) {
+function sortMiddleware(req, res, next) {
   res.locals._sort = {
     enabled: false,
     type: "default",
@@ -6,11 +6,13 @@ function SortMiddleware(req, res, next) {
 
   if ("_sort" in req.query) {
     res.locals._sort.enabled = true;
-    res.locals._sort.type = req.query.type;
+    
+    const validTypes = ["asc", "desc"];
+    res.locals._sort.type = validTypes.includes(req.query.type) ? req.query.type : "default";
     res.locals._sort.column = req.query.column;
   }
 
     next();
 }
 
-export default SortMiddleware;
+export default sortMiddleware;

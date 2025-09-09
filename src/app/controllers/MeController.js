@@ -2,19 +2,14 @@ import Course from "../models/Course.js";
 import { multipleMongooseToObject } from "../../until/mongoose.js";
 class MeController {
   // [GET] /me/stored/courses
-  storedCourses(req, res, next) {
-
-    let courseQuery = Course.find({});
-    if (res.locals._sort.enabled) {
-      const sort = {};
-      sort[res.locals._sort.column] = res.locals._sort.type === "asc" ? 1 : -1;
-      courseQuery = courseQuery.sort(sort);
-    }
-
+    storedCourses(req, res, next) {
     const toastMessage = req.session.toastMessage;
     delete req.session.toastMessage;
 
-    Promise.all([courseQuery, Course.countDocumentsWithDeleted({ deleted: true })])
+    Promise.all([
+      Course.find({}).sortable(res.locals._sort),
+      Course.countDocumentsWithDeleted({ deleted: true }),
+    ])
       .then(([courses, deletedCount]) => {
         res.render("me/stored-courses", {
           deletedCount,
@@ -29,7 +24,7 @@ class MeController {
   trashCourses(req, res, next) {
     const toastMessage = req.session.toastMessage;
     delete req.session.toastMessage;
-    Course.findWithDeleted({ deleted: true })
+    Course.findWithDeleted({ deleted: true }).sortable(res.locals._sort)
       .then((courses) =>
         res.render("me/trash-courses", {
           courses: multipleMongooseToObject(courses),

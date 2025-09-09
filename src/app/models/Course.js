@@ -12,6 +12,16 @@ const Course = new Schema(
   { timestamps: true }
 );
 
+// Custom query helpers
+Course.query.sortable = function (sortInfo) {
+  if (sortInfo && sortInfo.enabled) {
+    const sort = {};
+    sort[sortInfo.column] = sortInfo.type === "asc" ? 1 : -1;
+    return this.sort(sort);
+  }
+  return this;
+};
+
 // Add plugins
 Course.plugin(mongooseDelete, {
   deletedAt: true,

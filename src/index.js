@@ -7,7 +7,9 @@ import route from "./routes/index.js";
 import db from "./config/db/index.js";
 import methodOverride from "method-override";
 import session from "express-session";
+import helpers from "./helpers/handlebars.js";
 
+import sortMiddleware from "./app/middlewares/sortMiddleware.js";
 // Connect to database
 db.connect();
 
@@ -24,6 +26,8 @@ app.use(morgan("combined")); // log all requests to the console
 app.use(express.urlencoded({ extended: true })); // to parse form data in POST requests
 app.use(express.json()); // to parse JSON bodies
 app.use(methodOverride("_method")); // override with POST having ?_method=DELETE or ?_method=PUT
+// custom middlewares
+app.use(sortMiddleware);
 app.use(session({
   secret: "secret",
   resave: false,
@@ -38,19 +42,7 @@ app.engine(
   handlebars.engine({
     extname: ".hbs",
     helpers: {
-      inc: function (value) {
-        return parseInt(value) + 1;
-      },
-      formatDate: function (date) {
-        if (!date) return "";
-        const d = new Date(date);
-        const pad = (n) => n.toString().padStart(2, "0");
-        return `${pad(d.getDate())}/${pad(
-          d.getMonth() + 1
-        )}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(
-          d.getSeconds()
-        )}`;
-      },
+      ...helpers,
     },
   })
 );

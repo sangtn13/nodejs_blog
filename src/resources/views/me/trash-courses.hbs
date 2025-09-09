@@ -1,5 +1,6 @@
 <div class="container mt-5">
   <h2 class="mb-4">Khóa học đã xóa</h2>
+<<<<<<< HEAD
     <div class="d-flex justify-content-between align-items-center mb-3">
     <a href="/me/stored/courses" class="btn btn-secondary">Danh sách khóa học</a>
     {{#if courses.length}}
@@ -15,6 +16,11 @@
   </div>
   {{#if courses.length}}
     <form method="POST" action="/courses/bulk-action"  id="bulkForm">
+=======
+  <a href="/me/stored/courses" class="btn btn-secondary mb-3">Danh sách khóa học</a>
+  {{#if courses.length}}
+    <form method="POST" action="/courses/bulk-action">
+>>>>>>> 814d7c1f4eef0329be5c1884d2c3d47613c52428
       <table class="table table-bordered table-hover table-striped">
         <thead class="thead-dark">
           <tr>
@@ -23,7 +29,12 @@
             <th scope="col">Tên khóa học</th>
             <th scope="col">Mô tả</th>
             <th scope="col">Ảnh</th>
+<<<<<<< HEAD
             <th scope="col">Ngày xóa</th>
+=======
+            <th scope="col">Ngày tạo</th>
+            <th scope="col">Ngày cập nhật</th>
+>>>>>>> 814d7c1f4eef0329be5c1884d2c3d47613c52428
             <th scope="col">Trạng thái</th>
             <th scope="col" style="width: 180px;">Hành động</th>
           </tr>

@@ -19,7 +19,12 @@
           <tr>
             <th scope="col"><input type="checkbox" id="checkAll" /></th>
             <th scope="col">#</th>
-            <th scope="col">Tên khóa học</th>
+            <th scope="col">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span>Tên khóa học</span>
+              {{{sortable 'name' _sort}}}
+              </div>
+            </th>
             <th scope="col">Mô tả</th>
             <th scope="col">Ảnh</th>
             <th scope="col">Ngày tạo</th>

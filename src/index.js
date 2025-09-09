@@ -8,6 +8,8 @@ import db from "./config/db/index.js";
 import methodOverride from "method-override";
 import session from "express-session";
 
+import sortMiddleware from "./app/middlewares/sortMiddleware.x.js";
+
 // Connect to database
 db.connect();
 
@@ -24,6 +26,8 @@ app.use(morgan("combined")); // log all requests to the console
 app.use(express.urlencoded({ extended: true })); // to parse form data in POST requests
 app.use(express.json()); // to parse JSON bodies
 app.use(methodOverride("_method")); // override with POST having ?_method=DELETE or ?_method=PUT
+// custom middlewares
+app.use(sortMiddleware);
 app.use(session({
   secret: "secret",
   resave: false,
@@ -50,6 +54,24 @@ app.engine(
         )}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(
           d.getSeconds()
         )}`;
+      },
+      sortable: (field, sort) => {
+        const sortType = field === sort.column ? sort.type : "default";
+        const icons = {
+          default: "bi bi-arrow-down-up",
+          asc: "bi bi-arrow-up",
+          desc: "bi bi-arrow-down",
+        };
+        const types = {
+          default: "asc",
+          asc: "desc",
+          desc: "asc",
+        };
+        return `
+          <a href="?_sort&column=${field}&type=${types[sortType]}" title="Sắp xếp theo ${field}" style="color: inherit; text-decoration: none;">
+            <i class="${icons[sortType]}"></i>
+          </a>
+        `;
       },
     },
   })

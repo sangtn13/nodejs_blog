@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import route from "./routes/index.js";
 import db from "./config/db/index.js";
 import methodOverride from "method-override";
+import session from "express-session";
 
 // Connect to database
 db.connect();
@@ -23,6 +24,12 @@ app.use(morgan("combined")); // log all requests to the console
 app.use(express.urlencoded({ extended: true })); // to parse form data in POST requests
 app.use(express.json()); // to parse JSON bodies
 app.use(methodOverride("_method")); // override with POST having ?_method=DELETE or ?_method=PUT
+app.use(session({
+  secret: "secret",
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }, // for development
+}));
 app.use(express.static(path.join(__dirname, "public"))); // serve static files from 'public' directory
 
 // template engine

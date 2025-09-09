@@ -8,7 +8,7 @@ import db from "./config/db/index.js";
 import methodOverride from "method-override";
 import session from "express-session";
 
-import sortMiddleware from "./app/middlewares/sortMiddleware.x.js";
+import sortMiddleware from "./app/middlewares/SortMiddleware.js";
 
 // Connect to database
 db.connect();

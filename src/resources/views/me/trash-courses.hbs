@@ -1,8 +1,20 @@
 <div class="container mt-5">
   <h2 class="mb-4">Khóa học đã xóa</h2>
-  <a href="/me/stored/courses" class="btn btn-secondary mb-3">Danh sách khóa học</a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="/me/stored/courses" class="btn btn-secondary">Danh sách khóa học</a>
+    {{#if courses.length}}
+      <div class="d-flex align-items-center">
+        <select class="form-control mr-2" style="width: auto;" id="bulkActionSelect">
+          <option value="">-- Hành động --</option>
+          <option value="restore">Khôi phục đã chọn</option>
+          <option value="force-delete">Xóa vĩnh viễn đã chọn</option>
+        </select>
+        <button type="button" class="btn btn-success" onclick="executeBulkAction()">Thực hiện</button>
+      </div>
+    {{/if}}
+  </div>
   {{#if courses.length}}
-    <form method="POST" action="/courses/bulk-action">
+    <form method="POST" action="/courses/bulk-action"  id="bulkForm">
       <table class="table table-bordered table-hover table-striped">
         <thead class="thead-dark">
           <tr>
@@ -11,8 +23,7 @@
             <th scope="col">Tên khóa học</th>
             <th scope="col">Mô tả</th>
             <th scope="col">Ảnh</th>
-            <th scope="col">Ngày tạo</th>
-            <th scope="col">Ngày cập nhật</th>
+            <th scope="col">Ngày xóa</th>
             <th scope="col">Trạng thái</th>
             <th scope="col" style="width: 180px;">Hành động</th>
           </tr>
@@ -35,53 +46,31 @@
                   style="width: 80px; height: auto;"
                 />
               </td>
-              <td>{{formatDate createdAt}}</td>
-              <td>{{formatDate updatedAt}}</td>
-              <td>Đã xóa</td>
+              <td>{{formatDate deletedAt}}</td>
+              <td><span class="badge badge-danger">Đã xóa</span></td>
               <td>
-                <form
-                  action="/courses/{{_id}}/restore?_method=PATCH"
-                  method="POST"
-                  style="display:inline;"
-                >
                   <button
                     type="button"
-                    class="btn btn-sm btn-success restore-btn"
-                    data-id="{{_id}}"
+                    class="btn btn-sm btn-outline-success restore-btn"
+                    onclick="restoreItem('{{_id}}')"
+                    title="Khôi phục"
+                    style="margin-right: 4px;"
                   >
-                    Khôi phục
+                    <i class="bi bi-arrow-counterclockwise"></i>
                   </button>
-                </form>
-                <form
-                  action="/courses/{{_id}}/force?_method=DELETE"
-                  method="POST"
-                  style="display:inline;"
-                >
                   <button
-                    type="submit"
-                    class="btn btn-sm btn-danger"
-                    onclick="return confirm('Xóa vĩnh viễn khóa học này?')"
-                  >Xóa vĩnh viễn</button>
-                </form>
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    onclick="forceDeleteItem('{{_id}}')"
+                    title="Xóa vĩnh viễn"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
               </td>
             </tr>
           {{/each}}
         </tbody>
       </table>
-      <button
-        type="submit"
-        class="btn btn-success"
-        name="action"
-        value="restore"
-        onclick="return confirm('Bạn chắc chắn muốn khôi phục các khóa học đã chọn?')"
-      >Khôi phục đã chọn</button>
-      <button
-        type="submit"
-        class="btn btn-danger"
-        name="action"
-        value="force-delete"
-        onclick="return confirm('Bạn chắc chắn muốn xóa vĩnh viễn các khóa học đã chọn?')"
-      >Xóa vĩnh viễn đã chọn</button>
     </form>
   {{else}}
     <div class="alert alert-info text-center">
@@ -91,34 +80,89 @@
     </div>
   {{/if}}
 </div>
-
+<script src="/js/bulk-action.js"></script>
 <script>
-  // Check all checkbox
-  document.addEventListener('DOMContentLoaded', function() {
-    var checkAll = document.getElementById('checkAll');
-    if (checkAll) {
-      checkAll.addEventListener('change', function() {
-        var checkboxes = document.querySelectorAll('input[name="courseIds[]"]');
-        for (var checkbox of checkboxes) {
-          checkbox.checked = this.checked;
-        }
-      });
+  
+
+  // Execute bulk action
+  function executeBulkAction() {
+    var select = document.getElementById('bulkActionSelect');
+    var action = select.value;
+    
+    if (!action) {
+      alert('Vui lòng chọn hành động!');
+      return;
     }
-  });
-</script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.restore-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        if (confirm('Khôi phục khóa học này?')) {
-          const form = document.createElement('form');
-          form.method = 'POST';
-          form.action = `/courses/${btn.dataset.id}/restore?_method=PATCH`;
-          document.body.appendChild(form);
-          form.submit();
+    var checkedBoxes = document.querySelectorAll('input[name="courseIds[]"]:checked');
+    if (checkedBoxes.length === 0) {
+      alert('Vui lòng chọn ít nhất một khóa học!');
+      return;
+    }
+
+    var confirmMessage = '';
+    if (action === 'restore') {
+      confirmMessage = 'Bạn chắc chắn muốn khôi phục các khóa học đã chọn?';
+    } else if (action === 'force-delete') {
+      confirmMessage = 'Bạn chắc chắn muốn xóa vĩnh viễn các khóa học đã chọn?';
+    }
+
+    if (confirm(confirmMessage)) {
+      var form = document.querySelector('form[action="/courses/bulk-action"]');
+      if (form) {
+        // Remove existing action input if any
+        var existingInput = form.querySelector('input[name="action"]');
+        if (existingInput) {
+          existingInput.remove();
         }
-      });
+        
+        // Add new action input
+        var actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = action;
+        form.appendChild(actionInput);
+        form.submit();
+      } else {
+        alert('Không tìm thấy form!');
+      }
+    }
+  }
+
+  // Restore individual item
+  function restoreItem(courseId) {
+    if (confirm('Khôi phục khóa học này?')) {
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/courses/' + courseId + '/restore?_method=PATCH';
+      document.body.appendChild(form);
+      form.submit();
+    }
+  }
+
+  // Force delete individual item
+  function forceDeleteItem(courseId) {
+    if (confirm('Xóa vĩnh viễn khóa học này?')) {
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/courses/' + courseId + '/force?_method=DELETE';
+      document.body.appendChild(form);
+      form.submit();
+    }
+  }
+
+        // Show toast if there's a message
+  {{#if toastMessage}}
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Toast message exists:', '{{toastMessage.type}}', '{{{toastMessage.message}}}');
+      console.log('showToast function exists:', typeof showToast);
+      
+      if (typeof showToast === 'function') {
+        showToast('{{toastMessage.type}}', '{{{toastMessage.message}}}');
+      } else {
+        console.error('showToast function not found!');
+        alert('{{toastMessage.type}}: {{{toastMessage.message}}}'); // Fallback
+      }
     });
-  });
+  {{/if}}
 </script>

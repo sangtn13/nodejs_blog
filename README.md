@@ -1,4 +1,4 @@
-# 📚 Blog Education - Node.js Blog Platform
+# 📚 NodeJS Blog - Hệ thống quản lý khóa học
 
 Một nền tảng blog giáo dục được xây dựng bằng Node.js, Express, MongoDB và Handlebars. Dự án cung cấp hệ thống quản lý khóa học với tính năng soft delete và khôi phục.
 
@@ -9,176 +9,267 @@ Một nền tảng blog giáo dục được xây dựng bằng Node.js, Express
 
 ## 🚀 Tính năng chính
 
-- ✅ **Quản lý khóa học**: Tạo, chỉnh sửa, xóa và khôi phục khóa học
-- ✅ **Soft Delete**: Hệ thống xóa mềm với thùng rác
-- ✅ **Bulk Actions**: Thao tác hàng loạt (xóa/khôi phục nhiều mục)
-- ✅ **Template Engine**: Sử dụng Handlebars để render views
-- ✅ **Responsive Design**: Giao diện thân thiện với Bootstrap
-- ✅ **Database Integration**: Tích hợp MongoDB với Mongoose
-- ✅ **Logging**: HTTP request logging với Morgan
+### 📖 Quản lý khóa học
+- ✅ **CRUD hoàn chỉnh**: Tạo, đọc, cập nhật, xóa khóa học
+- 🗑️ **Soft Delete**: Xóa mềm với thùng rác và khôi phục
+- 📊 **Bulk Actions**: Thao tác hàng loạt (xóa/khôi phục nhiều khóa học)
+- 🔄 **Sorting**: Sắp xếp theo tên khóa học (ASC/DESC)
+- 🔍 **Validation**: Kiểm tra tính hợp lệ của dữ liệu đầu vào
+
+### 🎨 Giao diện người dùng
+- 📱 **Responsive Design**: Tương thích mọi thiết bị
+- 🎯 **Interactive UI**: Checkbox chọn tất cả với trạng thái indeterminate
+- 🔔 **Toast Notifications**: Thông báo realtime với SweetAlert2
+- 🎨 **Bootstrap Icons**: Icon sorting với màu sắc nhất quán
+
+### 🔧 Tính năng kỹ thuật
+- 🛡️ **Session Management**: Quản lý phiên làm việc
+- 🔒 **Input Validation**: Kiểm tra ObjectId và dữ liệu đầu vào
+- 🚫 **Error Handling**: Xử lý lỗi toàn diện với trang 404
+- 🎭 **Custom Helpers**: Handlebars helpers tùy chỉnh
+- 🔄 **Middleware System**: Middleware sorting và session
 
 ## 🛠️ Công nghệ sử dụng
 
 ### Backend
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web framework
-- **MongoDB** - NoSQL database
-- **Mongoose** - MongoDB object modeling
-- **mongoose-delete** - Soft delete plugin
+- **Node.js** (ES6 Modules)
+- **Express.js** 5.1.0 - Web framework
+- **MongoDB** với **Mongoose** 8.18.0 - Database
+- **Express-Handlebars** 8.0.1 - Template engine
 
 ### Frontend
-- **Handlebars** - Template engine
 - **Bootstrap** - CSS framework
+- **Bootstrap Icons** - Icon library
+- **SweetAlert2** - Toast notifications
 - **Sass** - CSS preprocessor
 
 ### Development Tools
-- **Nodemon** - Auto-restart server
+- **Nodemon** - Auto restart server
 - **Morgan** - HTTP request logger
-- **Method Override** - HTTP verb support
+- **Method Override** - HTTP method override
 
-## 📋 Yêu cầu hệ thống
-
-- Node.js >= 16.0.0
-- MongoDB >= 4.0
-- npm hoặc yarn
-
-## ⚡ Cài đặt và chạy
-
-### 1. Clone repository
-```bash
-git clone https://github.com/SangTran13/nodejs_blog.git
-cd nodejs_blog
+### Packages chính
+```json
+{
+  "express": "^5.1.0",
+  "mongoose": "^8.18.0",
+  "mongoose-delete": "^1.0.2",
+  "express-handlebars": "^8.0.1",
+  "express-session": "^1.18.2",
+  "method-override": "^3.0.0"
+}
 ```
-
-### 2. Cài đặt dependencies
-```bash
-npm install
-```
-
-### 3. Khởi động MongoDB
-Đảm bảo MongoDB đang chạy tại `mongodb://127.0.0.1:27017`
-
-### 4. Chạy ứng dụng
-```bash
-# Development mode với auto-restart
-npm start
-
-# Compile Sass (terminal riêng)
-npm run watch
-```
-
-Ứng dụng sẽ chạy tại: `http://localhost:3000`
 
 ## 📁 Cấu trúc dự án
 
 ```
-src/
-├── app/
-│   ├── controllers/          # Logic xử lý request
-│   │   ├── CourseController.js
-│   │   ├── MeController.js
-│   │   ├── SiteController.js
-│   │   ├── AboutController.js
-│   │   └── ContactController.js
-│   └── models/               # Database schemas
-│       └── Course.js
-├── config/
-│   └── db/                   # Database configuration
-│       └── index.js
-├── routes/                   # Route definitions
-│   ├── index.js
-│   ├── courses.js
-│   ├── me.js
-│   ├── site.js
-│   ├── about.js
-│   └── contact.js
-├── resources/
-│   ├── views/                # Handlebars templates
-│   │   ├── layouts/
-│   │   ├── partials/
-│   │   ├── courses/
-│   │   └── me/
-│   └── scss/                 # Sass styles
-├── public/                   # Static assets
-│   ├── css/
-│   └── img/
-├── until/                    # Utility functions
-│   └── mongoose.js
-└── index.js                  # Entry point
+blog/
+├── src/
+│   ├── app/
+│   │   ├── controllers/          # Controllers xử lý logic
+│   │   │   ├── CourseController.js
+│   │   │   ├── MeController.js
+│   │   │   ├── SiteController.js
+│   │   │   ├── AboutController.js
+│   │   │   └── ContactController.js
+│   │   ├── middlewares/          # Custom middlewares
+│   │   │   └── sortMiddleware.js
+│   │   └── models/               # Mongoose models
+│   │       └── Course.js
+│   ├── config/
+│   │   └── db/                   # Database configuration
+│   │       └── index.js
+│   ├── helpers/                  # Handlebars helpers
+│   │   └── handlebars.js
+│   ├── public/                   # Static files
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── img/
+│   ├── resources/
+│   │   ├── scss/                 # Sass source files
+│   │   └── views/                # Handlebars templates
+│   │       ├── layouts/
+│   │       ├── partials/
+│   │       ├── courses/
+│   │       └── me/
+│   ├── routes/                   # Route definitions
+│   │   ├── index.js
+│   │   ├── courses.js
+│   │   ├── me.js
+│   │   ├── site.js
+│   │   ├── about.js
+│   │   └── contact.js
+│   ├── until/                    # Utility functions
+│   │   └── mongoose.js
+│   └── index.js                  # Entry point
+├── package.json
+├── nodemon.json
+└── README.md
 ```
 
-## 🔧 API Endpoints
+## 🚦 API Routes
 
-### Courses
-- `GET /` - Trang chủ, danh sách khóa học
-- `GET /courses/create` - Form tạo khóa học mới
-- `POST /courses/store` - Lưu khóa học mới
-- `GET /courses/:id/edit` - Form chỉnh sửa khóa học
-- `PUT /courses/:id` - Cập nhật khóa học
-- `DELETE /courses/:id` - Xóa mềm khóa học
-- `PATCH /courses/:id/restore` - Khôi phục khóa học
-- `DELETE /courses/:id/force` - Xóa vĩnh viễn khóa học
+### 📚 Khóa học (Courses)
+| Method | Route | Mô tả |
+|--------|-------|-------|
+| `GET` | `/courses/create` | Hiển thị form tạo khóa học |
+| `POST` | `/courses/store` | Lưu khóa học mới |
+| `GET` | `/courses/:_id` | Hiển thị chi tiết khóa học |
+| `GET` | `/courses/:id/edit` | Hiển thị form chỉnh sửa |
+| `PUT` | `/courses/:id` | Cập nhật khóa học |
+| `DELETE` | `/courses/:id` | Xóa mềm khóa học |
+| `PATCH` | `/courses/:id/restore` | Khôi phục khóa học |
+| `DELETE` | `/courses/:id/force` | Xóa vĩnh viễn khóa học |
+| `POST` | `/courses/bulk-action` | Thao tác hàng loạt |
 
-### Management
-- `GET /me/stored/courses` - Danh sách khóa học đã lưu
-- `GET /me/trash/courses` - Thùng rác
-- `POST /courses/bulk-action` - Thao tác hàng loạt
+### 👤 Quản lý cá nhân (Me)
+| Method | Route | Mô tả |
+|--------|-------|-------|
+| `GET` | `/me/stored/courses` | Danh sách khóa học đã lưu |
+| `GET` | `/me/trash/courses` | Thùng rác khóa học |
 
-### Other Pages
-- `GET /about` - Trang giới thiệu
-- `GET /contact` - Trang liên hệ
-- `POST /search` - Tìm kiếm
+### 🌐 Trang tĩnh
+| Method | Route | Mô tả |
+|--------|-------|-------|
+| `GET` | `/` | Trang chủ |
+| `GET` | `/about` | Trang giới thiệu |
+| `GET` | `/contact` | Trang liên hệ |
+| `GET` | `/search` | Trang tìm kiếm |
+| `POST` | `/search` | Xử lý tìm kiếm |
 
 ## 💾 Database Schema
 
 ### Course Model
 ```javascript
 {
-  name: String,           // Tên khóa học (required, max: 255)
-  description: String,    // Mô tả (required, max: 1000)
-  image: String,          // URL ảnh đại diện (required, max: 255)
-  deleted: Boolean,       // Soft delete flag
-  deletedAt: Date,        // Thời gian xóa
-  createdAt: Date,        // Thời gian tạo
-  updatedAt: Date         // Thời gian cập nhật
+  name: {
+    type: String,
+    maxLength: 255,
+    required: true
+  },
+  description: {
+    type: String,
+    maxLength: 1000,
+    required: true
+  },
+  image: {
+    type: String,
+    maxLength: 255,
+    required: true
+  },
+  deleted: Boolean,        // Soft delete flag
+  deletedAt: Date,         // Deletion timestamp
+  createdAt: Date,         // Auto-generated
+  updatedAt: Date          // Auto-generated
 }
 ```
 
-## 🎨 Handlebars Helpers
+## 🎭 Handlebars Helpers
 
-- `inc(value)` - Tăng giá trị lên 1
-- `formatDate(date)` - Format ngày tháng (dd/mm/yyyy hh:mm:ss)
+### Built-in Helpers
+- `inc(value)` - Tăng giá trị lên 1 (cho số thứ tự)
+- `formatDate(date)` - Format ngày tháng: `dd/mm/yyyy hh:mm:ss`
+- `sortable(field, sort)` - Tạo link và icon sorting với validation
 
-## 📝 Scripts
+### Sortable Helper Features
+- ✅ **Auto-validation**: Tự động validate type sorting
+- 🎨 **Dynamic Icons**: Icon thay đổi theo trạng thái (default/asc/desc)
+- 🔗 **Smart URLs**: Tự động tạo URL sorting với type tiếp theo
+- 🎯 **Color Consistency**: Icon cùng màu với text
 
+## 🔧 Cài đặt và chạy
+
+### Yêu cầu hệ thống
+- Node.js >= 16.0.0
+- MongoDB >= 4.0
+- NPM hoặc Yarn
+
+### Cài đặt
 ```bash
-# Khởi động server với nodemon
+# Clone repository
+git clone https://github.com/SangTran13/nodejs_blog.git
+cd nodejs_blog
+
+# Cài đặt dependencies
+npm install
+
+# Khởi động MongoDB (nếu chưa chạy)
+mongod
+
+# Chạy ứng dụng
+npm start
+```
+
+### Scripts khả dụng
+```bash
+# Khởi động server với nodemon (hot reload)
 npm start
 
 # Compile Sass với watch mode
 npm run watch
 
-# Run tests (chưa được implement)
+# Run tests (placeholder)
 npm test
 ```
 
-## 🔧 Cấu hình
+## ⚙️ Cấu hình
 
 ### Database
-Cấu hình database tại `src/config/db/index.js`:
 ```javascript
+// src/config/db/index.js
 mongoose.connect("mongodb://127.0.0.1:27017/blog_education_dev")
 ```
 
-### Port
-Server chạy trên port 3000 (có thể thay đổi trong `src/index.js`)
+### Server
+- **Port**: 3000 (có thể thay đổi trong `src/index.js`)
+- **Session Secret**: "secret" (nên thay đổi trong production)
+
+### Environment
+- **Type**: ES6 Modules (`"type": "module"` in package.json)
+- **Template Engine**: Handlebars (.hbs)
+- **Static Files**: Served từ `src/public/`
+
+## 🔒 Tính năng bảo mật
+
+### Input Validation
+- ✅ ObjectId validation cho tất cả database operations
+- ✅ Array validation cho bulk actions
+- ✅ Type validation cho sorting parameters
+- ✅ Required field validation cho form data
+
+### Error Handling
+- 🚫 404 page cho invalid routes và resources
+- 🚫 400 Bad Request cho invalid input
+- 🚫 Graceful error handling với try-catch
+- 🚫 Database error handling với proper status codes
+
+## 🎯 Tính năng nổi bật
+
+### 1. Smart Sorting System
+- **Middleware validation**: Chỉ chấp nhận `asc`/`desc`
+- **Helper validation**: Fallback về `default` nếu invalid
+- **URL safety**: Tự động clean invalid parameters
+- **Visual feedback**: Icon thay đổi theo trạng thái
+
+### 2. Advanced Bulk Actions
+- **Multi-select**: Checkbox với indeterminate state
+- **Batch operations**: Delete/restore nhiều records
+- **Transaction safety**: All-or-nothing operations
+- **User feedback**: Toast notifications cho mọi action
+
+### 3. Soft Delete System
+- **Trash management**: Thùng rác với count display
+- **Restore functionality**: Khôi phục từ thùng rác
+- **Force delete**: Xóa vĩnh viễn với confirmation
+- **Clean separation**: Stored vs Trash views
 
 ## 🚨 Lưu ý quan trọng
 
-1. **Soft Delete**: Dự án sử dụng `mongoose-delete` plugin cho soft delete
-2. **Method Override**: Sử dụng `?_method=DELETE` hoặc `?_method=PUT` cho form HTML
-3. **Static Files**: CSS, images được serve từ thư mục `public`
-4. **ES Modules**: Dự án sử dụng ES6 modules (`"type": "module"`)
+1. **ES6 Modules**: Project sử dụng `"type": "module"` - import/export syntax
+2. **Soft Delete**: Sử dụng `mongoose-delete` plugin cho soft delete
+3. **Method Override**: Form HTML sử dụng `?_method=DELETE/PUT`
+4. **Session Storage**: Toast messages được lưu trong session
+5. **Static Files**: CSS, JS, images serve từ `public` directory
 
 ## 🤝 Đóng góp
 
@@ -188,9 +279,9 @@ Server chạy trên port 3000 (có thể thay đổi trong `src/index.js`)
 4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Tạo Pull Request
 
-## 📄 License
+## 📝 License
 
-Dự án này được phân phối dưới license ISC. Xem file [LICENSE](LICENSE) để biết thêm chi tiết.
+Dự án này được phân phối dưới giấy phép ISC. Xem file `LICENSE` để biết thêm chi tiết.
 
 ## 👨‍💻 Tác giả
 
@@ -198,12 +289,19 @@ Dự án này được phân phối dưới license ISC. Xem file [LICENSE](LICE
 - GitHub: [@SangTran13](https://github.com/SangTran13)
 - Repository: [nodejs_blog](https://github.com/SangTran13/nodejs_blog)
 
-## 🔗 Links
+---
 
-- [Demo Live](https://github.com/SangTran13/nodejs_blog) 
-- [Issues](https://github.com/SangTran13/nodejs_blog/issues)
-- [Pull Requests](https://github.com/SangTran13/nodejs_blog/pulls)
+## 🔄 Changelog
+
+### v1.0.0
+- ✅ Hoàn thành hệ thống CRUD khóa học
+- ✅ Implement soft delete với thùng rác
+- ✅ Thêm bulk actions và sorting
+- ✅ Tích hợp toast notifications
+- ✅ Responsive design với Bootstrap
+- ✅ Custom Handlebars helpers
+- ✅ Middleware system hoàn chỉnh
 
 ---
 
-⭐ Nếu dự án hữu ích, hãy cho một star nhé! ⭐
+*Được xây dựng với ❤️ bằng Node.js và Express.js với fullstack.edu.vn*

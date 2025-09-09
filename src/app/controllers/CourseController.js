@@ -32,11 +32,17 @@ class CourseController {
     course
       .save()
       .then(() => {
-        req.session.toastMessage = { type: 'success', message: 'Khóa học đã được tạo thành công!' };
+        req.session.toastMessage = {
+          type: "success",
+          message: "Khóa học đã được tạo thành công!",
+        };
         res.redirect("/me/stored/courses");
       })
       .catch(() => {
-        req.session.toastMessage = { type: 'error', message: 'Có lỗi xảy ra khi tạo khóa học!' };
+        req.session.toastMessage = {
+          type: "error",
+          message: "Có lỗi xảy ra khi tạo khóa học!",
+        };
         res.redirect("/courses/create");
       });
   }
@@ -68,11 +74,17 @@ class CourseController {
     const formData = req.body;
     Course.updateOne({ _id: id }, formData)
       .then(() => {
-        req.session.toastMessage = { type: 'success', message: 'Khóa học đã được cập nhật thành công!' };
+        req.session.toastMessage = {
+          type: "success",
+          message: "Khóa học đã được cập nhật thành công!",
+        };
         res.redirect("/me/stored/courses");
       })
       .catch(() => {
-        req.session.toastMessage = { type: 'error', message: 'Có lỗi xảy ra khi cập nhật khóa học!' };
+        req.session.toastMessage = {
+          type: "error",
+          message: "Có lỗi xảy ra khi cập nhật khóa học!",
+        };
         res.redirect(`/courses/${id}/edit`);
       });
   }
@@ -85,11 +97,17 @@ class CourseController {
     }
     Course.delete({ _id: id })
       .then(() => {
-        req.session.toastMessage = { type: 'success', message: 'Khóa học đã được xóa vào thùng rác thành công!' };
+        req.session.toastMessage = {
+          type: "success",
+          message: "Khóa học đã được xóa vào thùng rác thành công!",
+        };
         res.redirect("/me/stored/courses");
       })
       .catch(() => {
-        req.session.toastMessage = { type: 'error', message: 'Có lỗi xảy ra khi xóa khóa học vào thùng rác!' };
+        req.session.toastMessage = {
+          type: "error",
+          message: "Có lỗi xảy ra khi xóa khóa học vào thùng rác!",
+        };
         res.redirect("/me/stored/courses");
       });
   }
@@ -102,7 +120,10 @@ class CourseController {
     }
     Course.restore({ _id: id })
       .then(() => {
-        req.session.toastMessage = { type: 'success', message: 'Khóa học đã được khôi phục thành công!' };
+        req.session.toastMessage = {
+          type: "success",
+          message: "Khóa học đã được khôi phục thành công!",
+        };
         res.redirect("/me/stored/courses");
       })
       .catch(next);
@@ -114,7 +135,9 @@ class CourseController {
     if (!Array.isArray(courseIds) || courseIds.length === 0) {
       return res.status(400).send("No courses selected");
     }
-    const validCourseIds = courseIds.filter((id) => mongoose.Types.ObjectId.isValid(id));
+    const validCourseIds = courseIds.filter((id) =>
+      mongoose.Types.ObjectId.isValid(id)
+    );
     if (validCourseIds.length === 0) {
       return res.status(400).send("No valid course IDs provided");
     }
@@ -122,33 +145,51 @@ class CourseController {
       case "delete":
         Course.delete({ _id: { $in: validCourseIds } })
           .then(() => {
-            req.session.toastMessage = { type: 'success', message: `Đã xóa ${validCourseIds.length} khóa học vào thùng rác thành công!` };
+            req.session.toastMessage = {
+              type: "success",
+              message: `Đã xóa ${validCourseIds.length} khóa học vào thùng rác thành công!`,
+            };
             res.redirect("/me/stored/courses");
           })
           .catch(() => {
-            req.session.toastMessage = { type: 'error', message: 'Có lỗi xảy ra khi xóa khóa học vào thùng rác!' };
+            req.session.toastMessage = {
+              type: "error",
+              message: "Có lỗi xảy ra khi xóa khóa học vào thùng rác!",
+            };
             res.redirect("/me/stored/courses");
           });
         break;
       case "restore":
         Course.restore({ _id: { $in: validCourseIds } })
           .then(() => {
-            req.session.toastMessage = { type: 'success', message: `Đã khôi phục ${validCourseIds.length} khóa học thành công!` };
+            req.session.toastMessage = {
+              type: "success",
+              message: `Đã khôi phục ${validCourseIds.length} khóa học thành công!`,
+            };
             res.redirect("/me/stored/courses");
           })
           .catch(() => {
-            req.session.toastMessage = { type: 'error', message: 'Có lỗi xảy ra khi khôi phục khóa học!' };
+            req.session.toastMessage = {
+              type: "error",
+              message: "Có lỗi xảy ra khi khôi phục khóa học!",
+            };
             res.redirect("/me/stored/courses");
           });
         break;
       case "force-delete":
         Course.deleteMany({ _id: { $in: validCourseIds } })
           .then(() => {
-            req.session.toastMessage = { type: 'success', message: `Đã xóa ${validCourseIds.length} khóa học thành công!` };
+            req.session.toastMessage = {
+              type: "success",
+              message: `Đã xóa ${validCourseIds.length} khóa học thành công!`,
+            };
             res.redirect("/me/trash/courses");
           })
           .catch(() => {
-            req.session.toastMessage = { type: 'error', message: 'Có lỗi xảy ra khi xóa khóa học vào thùng rác!' };
+            req.session.toastMessage = {
+              type: "error",
+              message: "Có lỗi xảy ra khi xóa khóa học vào thùng rác!",
+            };
             res.redirect("/me/trash/courses");
           });
         break;
@@ -165,11 +206,17 @@ class CourseController {
     }
     Course.deleteMany({ _id: id })
       .then(() => {
-        req.session.toastMessage = { type: 'success', message: 'Khóa học đã được xóa vĩnh viễn thành công!' };
+        req.session.toastMessage = {
+          type: "success",
+          message: "Khóa học đã được xóa vĩnh viễn thành công!",
+        };
         res.redirect("/me/trash/courses");
       })
       .catch(() => {
-        req.session.toastMessage = { type: 'error', message: 'Có lỗi xảy ra khi xóa khóa học vĩnh viễn!' };
+        req.session.toastMessage = {
+          type: "error",
+          message: "Có lỗi xảy ra khi xóa khóa học vĩnh viễn!",
+        };
         res.redirect("/me/trash/courses");
       });
   }

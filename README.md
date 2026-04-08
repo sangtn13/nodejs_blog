@@ -195,7 +195,7 @@ blog/
 ### Installation
 ```bash
 # Clone repository
-git clone https://github.com/SangTran13/nodejs_blog.git
+git clone https://github.com/sangtn13/nodejs_blog.git
 cd nodejs_blog
 
 # Install dependencies
@@ -299,9 +299,9 @@ This project is distributed under the ISC License. See the `LICENSE` file for mo
 
 ## 👨‍💻 Author
 
-**SangTran13**
-- GitHub: [@SangTran13](https://github.com/SangTran13)
-- Repository: [nodejs_blog](https://github.com/SangTran13/nodejs_blog)
+**sangtn13**
+- GitHub: [@sangtn13](https://github.com/sangtn13)
+- Repository: [nodejs_blog](https://github.com/sangtn13/nodejs_blog)
 
 ---
 
